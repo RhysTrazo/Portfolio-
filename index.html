@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[Your Name] — Portfolio</title>
+    <style>
+        :root {
+            --bg-color: #f7f6f0; /* Cream background from template */
+            --sidebar-color: #eee8d8; /* Slightly darker sidebar */
+            --main-text: #222;
+            --secondary-text: #666;
+            --accent-green: #2d6a4f; /* Green for tags/accent */
+            --border-color: #ddd;
+            --link-color: #333;
+            --hover-link: #666;
+            --font-family-serif: 'PT Serif', serif; /* Optional: adds a similar vibe */
+            --font-family-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-family-sans); background-color: var(--bg-color); color: var(--main-text); line-height: 1.6; display: flex; font-size: 14px;}
+
+        /* Sidebar Navigation */
+        aside.sidebar {
+            width: 250px;
+            background-color: var(--sidebar-color);
+            height: 100vh;
+            position: fixed;
+            padding: 40px 20px;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .profile-pic-placeholder {
+            width: 100px; font-weight: bold; border-radius: 50%; height: 100px;
+            background-color: #ccc; border: 2px solid #fff;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden; /* For when you add a real image */
+            margin-bottom: 20px;
+        }
+
+        .profile-pic-placeholder img { width: 100%; height: 100%; object-fit: cover;} /* Active once image exists */
+
+        .profile-name { font-weight: 700; font-size: 1.2rem; }
+        .profile-degree { color: var(--secondary-text); font-size: 0.9rem; margin-bottom: 30px; }
+
+        nav ul { list-style: none; padding-top: 20px; border-top: 1px solid var(--border-color);}
+        nav ul li { margin-bottom: 15px; }
+        nav ul li a { text-decoration: none; color: var(--link-color); font-weight: 600; display: flex; align-items: center;}
+        nav ul li a:hover { color: var(--hover-link); }
+        nav ul li a span.nav-index { color: #a9a9a9; width: 30px; display: inline-block; font-size: 0.8rem;}
+
+        .last-updated { margin-top: auto; color: var(--secondary-text); font-size: 0.8rem; padding-top: 20px; }
+
+        /* Main Content Area */
+        main {
+            margin-left: 250px;
+            flex: 1;
+            padding: 80px 60px;
+            max-width: 900px; /* Limits reading width for better legibility */
+        }
+
+        section { padding-bottom: 80px; }
+        h1, h2, h3 { color: var(--main-text); font-weight: 700; }
+        .index-number { color: #9a8a70; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        section h2.section-heading { font-size: 1.8rem; margin-bottom: 30px; }
+
+        /* Hero (Index 00) */
+        #hero h1 { font-size: 2.5rem; line-height: 1.2; margin-bottom: 10px; }
+        .hero-title-what { font-family: var(--font-family-sans); font-weight: 700;} /* Keeping it sans, like template */
+        .hero-bio { font-size: 1.1rem; color: var(--secondary-text); margin-bottom: 30px; max-width: 70%;}
+        .hero-links a { text-decoration: underline; color: var(--link-color); margin-right: 20px; font-weight: 600; font-size: 0.95rem;}
+        .hero-links a:hover { color: var(--hover-link); text-decoration: none; }
+
+        /* About (Index 01) */
+        .about-text { max-width: 70%; font-size: 1.05rem; }
+        .about-text p { margin-bottom: 20px; }
+
+        /* Skills (Index 02) */
+        .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+        .skills-column h4 { font-size: 0.9rem; text-transform: uppercase; color: var(--accent-green); letter-spacing: 1px; margin-bottom: 15px;}
+        .skills-column ul { list-style: none; }
+        .skills-column ul li { font-size: 1.05rem; color: var(--secondary-text); margin-bottom: 8px;}
+
+        /* Projects (Index 03) */
+        .projects-grid { display: flex; flex-direction: column; gap: 30px;}
+        .project-card {
+            background-color: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 25px;
+            display: flex;
+            gap: 25px;
+            align-items: start;
+        }
+        .project-thumbnail-placeholder {
+            width: 150px; flex-shrink: 0; background-color: #eaeaea; color: var(--secondary-text);
+            height: 100px; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 0.8rem;
+            border: 1px solid #ddd;
+        }
+        .project-details h3 { font-size: 1.2rem; margin-bottom: 8px;}
+        .project-details p { color: var(--secondary-text); margin-bottom: 15px;}
+        .project-tags { display: flex; gap: 10px; margin-bottom: 15px;}
+        .tag {
+            background-color: #eee8d8; color: #6e6451;
+            font-size: 0.8rem; padding: 4px 10px; border-radius: 4px;
+        }
+        .project-links a { text-decoration: underline; color: var(--accent-green); margin-right: 15px; font-weight: 600; font-size: 0.9rem;}
+        .project-links a:hover { text-decoration: none;}
+
+        /* Experience & Education (Index 04) */
+        .experience-education-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 50px;}
+        
+        .timeline-entry { position: relative; padding-left: 20px; margin-bottom: 30px;}
+        .timeline-entry::before { /* Circle on timeline */
+            content: ""; position: absolute; left: 0; top: 7px; width: 10px; height: 10px;
+            background-color: var(--accent-green); border-radius: 50%;
+        }
+        .entry-date { color: var(--secondary-text); font-size: 0.8rem; margin-bottom: 5px;}
+        .entry-title { font-weight: 700; font-size: 1rem;}
+        .entry-org { color: var(--accent-green); font-weight: 600; margin-bottom: 8px;}
+        .entry-summary { color: var(--secondary-text); font-size: 0.95rem;}
+
+        /* Contact (Index 05) */
+        .contact-content { max-width: 60%; font-size: 1.05rem; }
+        .contact-content p { margin-bottom: 25px; }
+        .contact-content a { color: var(--accent-green); text-decoration: underline; font-weight: 600; }
+        .contact-content a:hover { text-decoration: none; }
+        .contact-links { border-top: 1px solid var(--border-color); padding-top: 15px; }
+        .contact-links p { color: var(--secondary-text); font-size: 0.9rem; margin-bottom: 10px;}
+
+        footer { font-size: 0.8rem; color: #888; padding-top: 40px; }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <!-- Replace 'portrait.jpg' placeholder once image is added -->
+        <div class="profile-pic-placeholder">
+            [Your Image]
+            <!-- <img src="portrait.jpg" alt="[Your Name]"> -->
+        </div>
+        <div class="profile-name">[Your Name]</div>
+        <div class="profile-degree">
+            [Your field / degree, e.g. "B.S. Information Technology, 2026"]
+        </div>
+
+        <nav>
+            <ul>
+                <li><a href="#hero"><span class="nav-index">01</span> About</a></li>
+                <li><a href="#skills"><span class="nav-index">02</span> Skills</a></li>
+                <li><a href="#projects"><span class="nav-index">03</span> Projects</a></li>
+                <li><a href="#experience"><span class="nav-index">04</span> Experience</a></li>
+                <li><a href="#contact"><span class="nav-index">05</span> Contact</a></li>
+            </ul>
+        </nav>
+
+        <div class="last-updated">Last updated [Month Year]</div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main>
+        <!-- Hero Section (Portfolio — Index 00) -->
+        <section id="hero">
+            <h1>[Your Name].</h1>
+            <h1 class="hero-title-what">[What you make or study].</h1>
+            <p class="hero-bio">
+                "[One or two sentences that tell a stranger what you're studying, what you're good at, and what kind of work you want next — internship, freelance, research, etc.]"
+            </p>
+            <div class="hero-links">
+                <a href="#contact">Email</a>
+                <a href="#">Resume</a> <!-- Update with resume link -->
+                <a href="#">GitHub</a> <!-- Update with GitHub URL -->
+                <a href="#">LinkedIn</a> <!-- Update with LinkedIn URL -->
+            </div>
+        </section>
+
+        <hr style="border: 0; border-top: 1px solid var(--border-color); margin-bottom: 80px;">
+
+        <!-- 01 About (Index 01) -->
+        <section id="about">
+            <div class="index-number">Index 01</div>
+            <h2 class="section-heading">About</h2>
+            <div class="about-text">
+                <p>"[Two to three sentences: who you are, what you're studying, and what draws you to it. Write like you're introducing yourself to someone at a career fair — plain and specific, not a list of adjectives.]"</p>
+                <p>"[Optional second paragraph: a current focus, a class or project that shaped your direction, or what you're looking for next.]"</p>
+            </div>
+        </section>
+
+        <!-- 02 Skills (Index 02) -->
+        <section id="skills">
+            <div class="index-number">Index 02</div>
+            <h2 class="section-heading">Skills</h2>
+            <div class="skills-grid">
+                <div class="skills-column">
+                    <h4>LANGUAGES</h4>
+                    <ul>
+                        <li>[Skill 1, e.g., C#]</li>
+                        <li>[Skill 2, e.g., Java]</li>
+                        <li>[Skill 3, e.g., C++]</li>
+                        <li>[Skill 4, e.g., Python]</li>
+                    </ul>
+                </div>
+                <div class="skills-column">
+                    <h4>TOOLS</h4>
+                    <ul>
+                        <li>[Tool 1, e.g., Figma]</li>
+                        <li>[Tool 2, e.g., Flutter]</li>
+                        <li>[Tool 3, e.g., Git]</li>
+                    </ul>
+                </div>
+                <div class="skills-column">
+                    <h4>OTHER</h4>
+                    <ul>
+                        <li>[Skill 1]</li>
+                        <li>[Skill 2]</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 03 Projects (Index 03) -->
+        <section id="projects">
+            <div class="index-number">Index 03</div>
+            <h2 class="section-heading">Projects</h2>
+            <div class="projects-grid">
+                
+                <!-- Project Card 1 -->
+                <div class="project-card">
+                    <div class="project-thumbnail-placeholder">
+                        [Describe what's shown in the image]
+                        <!-- Replace when you have images: <img src="project1.jpg" alt="..."> -->
+                    </div>
+                    <div class="project-details">
+                        <h3>[Project name]</h3>
+                        <p>"[One or two sentences: what the project is, the problem it solves, and your role in it.]"</p>
+                        <div class="project-tags">
+                            <span class="tag">[Tech]</span>
+                            <span class="tag">[Tech]</span>
+                            <span class="tag">[Tech]</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#">Live demo</a>
+                            <a href="#">Source</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project Card 2 -->
+                <div class="project-card">
+                    <div class="project-thumbnail-placeholder">
+                        [Describe what's shown in the image]
+                    </div>
+                    <div class="project-details">
+                        <h3>[Project name]</h3>
+                        <p>"[One or two sentences: what the project is, the problem it solves, and your role in it.]"</p>
+                        <div class="project-tags">
+                            <span class="tag">[Tech]</span>
+                            <span class="tag">[Tech]</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#">Live demo</a>
+                            <a href="#">Source</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 04 Experience & Education (Index 04) -->
+        <section id="experience">
+            <div class="index-number">Index 04</div>
+            <h2 class="section-heading">Experience & Education</h2>
+            <div class="experience-education-grid">
+                
+                <!-- Experience Column -->
+                <div class="timeline-column">
+                    <h3 class="column-heading" style="color: var(--accent-green); text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; margin-bottom: 20px;">EXPERIENCE</h3>
+                    
+                    <!-- Entry 1 -->
+                    <div class="timeline-entry">
+                        <div class="entry-date">[Month Year] — [Month Year / Present]</div>
+                        <div class="entry-title">[Role title]</div>
+                        <div class="entry-org">[Company or organization name]</div>
+                        <div class="entry-summary">"[One or two sentences on what you did and what came out of it.]"</div>
+                    </div>
+                    <!-- Entry 2 -->
+                    <div class="timeline-entry">
+                        <div class="entry-date">[Month Year] — [Month Year]</div>
+                        <div class="entry-title">[Role title]
